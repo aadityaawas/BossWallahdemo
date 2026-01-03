@@ -9,7 +9,7 @@ import pages.containers.ILoginContainer;
 import pages.containers.IProfileContainer;
 import pages.containers.IWelcomeScreenContainer;
 
-public class LoginTestCases {
+public class LoginTestCase {
 
     private ILoginContainer loginPageObjects;
     private IDashboardContainer dashboardPageObjects;
@@ -24,7 +24,6 @@ public class LoginTestCases {
         welcomeScreenPageObjects = pageFactory.getPageObject(IWelcomeScreenContainer.class);
         dashboardPageObjects = pageFactory.getPageObject(IDashboardContainer.class);
         profilePageObjects = pageFactory.getPageObject(IProfileContainer.class);
-        System.out.println("Login Page Objects Created");
     }
 
     @AfterClass
