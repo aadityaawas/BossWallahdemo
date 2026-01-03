@@ -13,7 +13,6 @@ public class PageFactory {
         return className.cast(
                 objectMap.computeIfAbsent(implementedClass, key -> {
                     try {
-                        System.out.println("Creating object for class " + implementedClass);
                         return key.getDeclaredConstructor().newInstance();
                     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
                              InvocationTargetException e) {
@@ -24,6 +23,12 @@ public class PageFactory {
     }
 
     private Class<?> createClassName(Class<?> type) {
+        // Creational Pattern requirements to create the instances of page object classes
+        String packageName = "pages";
+        String classNameSuffix = "PageObjects";
+        String startIndexCharacters = "I";
+        String endIndexCharacters = "Container";
+        String packageConcatenatorOperator = ".";
 
         // Checking if the provided class is an interface or not
         if (!type.isInterface()) {
@@ -38,23 +43,17 @@ public class PageFactory {
             throw new RuntimeException("Class " + type.getName() + " has no simple name");
         }
 
-        // Checking if this interface starts with "I"
-        if (!simpleName.startsWith("I")) {
-            throw new RuntimeException("Interface " + type.getName() + " is not a valid simple name, it should start with 'I'");
+        simpleName = type.getSimpleName(); // e.g., ILoginContainer
+        if (!simpleName.startsWith(startIndexCharacters) || !simpleName.endsWith(endIndexCharacters)) {
+            throw new RuntimeException("Interface name must start with '"+startIndexCharacters+"' and end with '"+endIndexCharacters+"': " + simpleName);
         }
 
-        // Checking if this interface ends with "Container"
-        if (!simpleName.endsWith("Container")) {
-            throw new RuntimeException("Interface " + type.getName() + " is not a valid simple name, it should end with 'Container'");
-        }
+        // Removing the first character and last string from the class name, i.e. "I" and "Container"
+        simpleName = simpleName.substring(1, simpleName.length() - endIndexCharacters.length());
+        simpleName = simpleName + classNameSuffix;
 
-        simpleName = simpleName.substring(1, simpleName.length() - "Container".length());
-        simpleName = simpleName + "PageObjects";
-
-        System.out.println("Simple name is " + simpleName);
-        String finalQualifiedName = "pages"+ "." + simpleName;
-        System.out.println("PackageName is " + finalQualifiedName);
-
+        // Final string value for creating the object of the required class, i.e. LoginPage
+        String finalQualifiedName = packageName+ packageConcatenatorOperator + simpleName;
         try {
             return Class.forName(finalQualifiedName);
         }  catch (ClassNotFoundException e) {

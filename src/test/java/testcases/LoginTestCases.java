@@ -1,14 +1,9 @@
 package testcases;
 
 import factories.PageFactory;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import pages.DashboardPageObjects;
-import pages.LoginPageObjects;
-import pages.ProfilePageObjects;
-import pages.WelcomeScreenPageObjects;
 import pages.containers.IDashboardContainer;
 import pages.containers.ILoginContainer;
 import pages.containers.IProfileContainer;
@@ -16,28 +11,25 @@ import pages.containers.IWelcomeScreenContainer;
 
 public class LoginTestCases {
 
-    private LoginPageObjects loginPageObjects;
-    private DashboardPageObjects dashboardPageObjects;
-    private ProfilePageObjects profilePageObjects;
-    private WelcomeScreenPageObjects welcomeScreenPageObjects;
+    private ILoginContainer loginPageObjects;
+    private IDashboardContainer dashboardPageObjects;
+    private IProfileContainer profilePageObjects;
+    private IWelcomeScreenContainer welcomeScreenPageObjects;
+    private PageFactory pageFactory;
 
     @BeforeClass
     private void setupPage() {
-        PageFactory pageFactory = new PageFactory();
-        loginPageObjects = (LoginPageObjects) pageFactory.getPageObject(ILoginContainer.class);
-        welcomeScreenPageObjects = (WelcomeScreenPageObjects) pageFactory.getPageObject(IWelcomeScreenContainer.class);
-        dashboardPageObjects = (DashboardPageObjects) pageFactory.getPageObject(IDashboardContainer.class);
-        profilePageObjects = (ProfilePageObjects) pageFactory.getPageObject(IProfileContainer.class);
+        pageFactory = new PageFactory();
+        loginPageObjects = pageFactory.getPageObject(ILoginContainer.class);
+        welcomeScreenPageObjects = pageFactory.getPageObject(IWelcomeScreenContainer.class);
+        dashboardPageObjects = pageFactory.getPageObject(IDashboardContainer.class);
+        profilePageObjects = pageFactory.getPageObject(IProfileContainer.class);
         System.out.println("Login Page Objects Created");
     }
 
     @AfterClass
     private void tearDown() {
-        loginPageObjects = null;
-        dashboardPageObjects = null;
-        profilePageObjects = null;
-        welcomeScreenPageObjects = null;
-        System.out.println("Login Page Objects Deleted");
+        pageFactory.clearInstances();
     }
 
     @Test(priority = 1)
