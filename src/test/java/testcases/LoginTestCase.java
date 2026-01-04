@@ -1,6 +1,5 @@
 package testcases;
 
-import factories.PageFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -8,18 +7,17 @@ import pages.containers.IDashboardContainer;
 import pages.containers.ILoginContainer;
 import pages.containers.IProfileContainer;
 import pages.containers.IWelcomeScreenContainer;
+import testbase.BaseTest;
 
-public class LoginTestCase {
+public class LoginTestCase extends BaseTest {
 
     private ILoginContainer loginPageObjects;
     private IDashboardContainer dashboardPageObjects;
     private IProfileContainer profilePageObjects;
     private IWelcomeScreenContainer welcomeScreenPageObjects;
-    private PageFactory pageFactory;
 
     @BeforeClass
     private void setupPage() {
-        pageFactory = new PageFactory();
         loginPageObjects = pageFactory.getPageObject(ILoginContainer.class);
         welcomeScreenPageObjects = pageFactory.getPageObject(IWelcomeScreenContainer.class);
         dashboardPageObjects = pageFactory.getPageObject(IDashboardContainer.class);
@@ -27,7 +25,7 @@ public class LoginTestCase {
     }
 
     @AfterClass
-    private void tearDown() {
+    private void tearPage() {
         pageFactory.clearInstances();
     }
 
