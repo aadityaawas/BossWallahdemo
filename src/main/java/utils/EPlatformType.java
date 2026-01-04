@@ -2,6 +2,7 @@ package utils;
 
 import java.util.Locale;
 
+// Enum for platforms i.e. Android, IOS, Microsoft
 public enum EPlatformType {
     ANDROID,
     IOS;

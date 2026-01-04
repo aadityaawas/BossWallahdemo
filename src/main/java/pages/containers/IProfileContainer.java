@@ -17,6 +17,7 @@ public interface IProfileContainer {
 
     // select edit profile buttons
     void selectEditProfileButton();
+    void selectEditProfilePictureButton();
     void selectTakePhotoButton();
     void selectFromGalleryButton();
     void selectUploadButton();
@@ -28,5 +29,10 @@ public interface IProfileContainer {
     void selectFeedbackButton();
     void selectDataPrivacyButton();
     void selectLogoutButton();
+    void selectCancelButton();
+    void selectConfirmLogoutButton();
+
+    // element is displayed buttons
+    boolean isSuccessfullyPhotoUploaded();
 
 }

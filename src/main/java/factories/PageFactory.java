@@ -7,14 +7,19 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class PageFactory {
-
+    // ConcurrentHashMap for maintaining all page object that are created in the test suite execution.
+    // This is to save the object so that we don't need to create them again and again.
     private final Map<Class<?>, Object> objectMap = new ConcurrentHashMap<>();
 
+    // main method to create the object for the provided class using reflections
     public <T> T getPageObject(Class<T> className) {
         Class<?> implementedClass = createClassName(className);
+
+        // Will only compute if that object is not present in the objectMap.
         return className.cast(
                 objectMap.computeIfAbsent(implementedClass, key -> {
                     try {
+                        // Will provide the private, protected, and, public constructor
                         return key.getDeclaredConstructor().newInstance();
                     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException |
                              InvocationTargetException e) {
@@ -24,6 +29,7 @@ public class PageFactory {
         );
     }
 
+    // Creating desired class name with string manipulations
     private Class<?> createClassName(Class<?> type) {
         // Creational Pattern requirements to create the instances of page object classes
         String packageName = "pages";
@@ -48,11 +54,12 @@ public class PageFactory {
         String finalQualifiedName = packageName + dot + simpleName;
         try {
             return Class.forName(finalQualifiedName);
-        }  catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
+    // Helper method for creating simple class name
     private static @NonNull String getSimpleClassName(Class<?> type, String startIndexCharacters, String endIndexCharacters) {
         String simpleName = type.getSimpleName(); // e.g., ILoginContainer
 
@@ -62,11 +69,12 @@ public class PageFactory {
         }
 
         if (!simpleName.startsWith(startIndexCharacters) || !simpleName.endsWith(endIndexCharacters)) {
-            throw new RuntimeException("Interface name must start with '"+ startIndexCharacters +"' and end with '"+ endIndexCharacters +"': " + simpleName);
+            throw new RuntimeException("Interface name must start with '" + startIndexCharacters + "' and end with '" + endIndexCharacters + "': " + simpleName);
         }
         return simpleName;
     }
 
+    // clearing the objectMap for preventing memory leakage.
     public void clearInstances() {
         objectMap.clear();
     }

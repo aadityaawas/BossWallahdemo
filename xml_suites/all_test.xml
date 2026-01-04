@@ -1,0 +1,12 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Demo Suite">
+    <listeners>
+        <listener class-name="listeners.TestExecutionListener"/>
+        <listener class-name="listeners.GlobalRetryAnalyzer"/>
+    </listeners>
+    <test name="Boss_Wallah_Test">
+        <classes>
+            <class name="testcases.LoginTestCase"></class>
+        </classes>
+    </test>
+</suite>

@@ -14,6 +14,7 @@ import utils.EPlatformType;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.time.Duration;
 
 public class AppiumHybridDriverInitializer {
     // This is used for checking the current context of the application like Native or Web view during parallel execution in flutter and native apps.
@@ -40,6 +41,7 @@ public class AppiumHybridDriverInitializer {
     public void initializeHybridAppiumDriver(){
         try {
             AppiumDriver localAppiumDriver = getAppiumPlatformDriver();
+            localAppiumDriver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
             DriverFactory.setDriver(localAppiumDriver);
         } catch (SessionNotCreatedException | AppiumServerHasNotBeenStartedLocallyException | TimeoutException exception) {
             throw new RuntimeException("Failed to start Appium session", exception);
